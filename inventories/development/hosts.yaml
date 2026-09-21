@@ -1,0 +1,9 @@
+---
+all:
+  children:
+    cluster:
+      hosts:
+        master:
+          ansible_host: master
+  vars:
+    ansible_user: user
