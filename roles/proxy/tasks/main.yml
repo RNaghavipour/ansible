@@ -1,3 +1,20 @@
-#SPDX-License-Identifier: MIT-0
 ---
-# tasks file for proxy
+- name: Configure proxy system-wide
+  ansible.builtin.blockinfile:
+    path: /etc/environment
+    marker: "# {mark} ANSIBLE PROXY"
+    block: |
+      http_proxy=http://{{ proxy_ip }}:{{ proxy_port }}
+      https_proxy=http://{{ proxy_ip }}:{{ proxy_port }}
+      HTTP_PROXY=http://{{ proxy_ip }}:{{ proxy_port }}
+      HTTPS_PROXY=http://{{ proxy_ip }}:{{ proxy_port }}
+      all_proxy=socks5://{{ proxy_ip }}:{{ proxy_port }}
+      ALL_PROXY=socks5://{{ proxy_ip }}:{{ proxy_port }}
+  when: proxy_scope.system_wide
+
+- name: Remove proxy system-wide
+  ansible.builtin.blockinfile:
+    path: /etc/environment
+    marker: "# {mark} ANSIBLE PROXY"
+    state: absent
+  when: proxy_remove.system_wide
