@@ -1,3 +1,12 @@
-#SPDX-License-Identifier: MIT-0
 ---
-# defaults file for proxy
+# in which scope the proxy must be set
+proxy_scope:
+  system_wide: true
+
+# remove proxy from which scope
+proxy_remove:
+  system_wide: false
+
+# information of the proxy
+proxy_ip: "192.168.1.1"
+proxy_port: "1800"
