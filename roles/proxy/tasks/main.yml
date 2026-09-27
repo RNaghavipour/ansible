@@ -18,3 +18,26 @@
     marker: "# {mark} ANSIBLE PROXY"
     state: absent
   when: proxy_remove.system_wide
+
+- name: Configure proxy for shell sessions
+  ansible.builtin.copy:
+    dest: /etc/profile.d/ansible_proxy.sh
+    owner: root
+    group: root
+    mode: '0644'
+    content: |
+        export http_proxy="http://{{ proxy_ip }}:{{ proxy_port }}"
+        export https_proxy="http://{{ proxy_ip }}:{{ proxy_port }}"
+        export HTTP_PROXY="http://{{ proxy_ip }}:{{ proxy_port }}"
+        export HTTPS_PROXY="http://{{ proxy_ip }}:{{ proxy_port }}"
+        export all_proxy="socks5://{{ proxy_ip }}:{{ proxy_port }}"
+        export ALL_PROXY="socks5://{{ proxy_ip }}:{{ proxy_port }}"
+        export no_proxy="localhost,{{ proxy_ip }}"
+        export NO_PROXY="localhost,{{ proxy_ip }}"
+  when: proxy_scope.shell_session
+
+- name: Remove proxy of shell sessions
+  ansible.builtin.file:
+    path: /etc/profile.d/ansible_proxy.sh
+    state: absent
+  when: proxy_remove.shell_session

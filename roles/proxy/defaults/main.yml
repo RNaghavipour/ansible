@@ -2,10 +2,12 @@
 # in which scope the proxy must be set
 proxy_scope:
   system_wide: true
+  shell_session: true
 
 # remove proxy from which scope
 proxy_remove:
   system_wide: false
+  shell_session: false
 
 # information of the proxy
 proxy_ip: "192.168.1.1"
