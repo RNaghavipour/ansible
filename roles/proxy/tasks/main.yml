@@ -41,3 +41,8 @@
     path: /etc/profile.d/ansible_proxy.sh
     state: absent
   when: proxy_remove.shell_session
+
+- name: Configure proxy for systemd services
+  ansible.builtin.include_tasks:
+    file: systemd_services_proxy.yml
+

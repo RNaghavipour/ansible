@@ -1,0 +1,33 @@
+---
+- name: Create needed directories
+  ansible.builtin.file:
+    path: "/etc/systemd/system/{{ item }}.service.d"
+    state: directory
+    mode: '0755'
+  loop: "{{ proxy_systemd_services }}"
+
+- name: Configure proxy for systemd services
+  ansible.builtin.copy:
+    dest: "/etc/systemd/system/{{ item }}.service.d/ansible_proxy.conf"
+    mode: '0644'
+    content: |
+      [Service]
+        Environment "http_proxy=http://{{ proxy_ip }}:{{ proxy_port }}"
+        Environment "https_proxy=http://{{ proxy_ip }}:{{ proxy_port }}"
+        Environment "HTTP_PROXY=http://{{ proxy_ip }}:{{ proxy_port }}"
+        Environment "HTTPS_PROXY=http://{{ proxy_ip }}:{{ proxy_port }}"
+        Environment "all_proxy=socks5://{{ proxy_ip }}:{{ proxy_port }}"
+        Environment "ALL_PROXY=socks5://{{ proxy_ip }}:{{ proxy_port }}"
+        Environment "no_proxy=localhost,{{ proxy_ip }}"
+        Environment "NO_PROXY=localhost,{{ proxy_ip }}"
+  loop: "{{ proxy_systemd_services }}"
+  when: proxy_scope.systemd_services
+  notify: Restart service
+
+- name: Remove proxy config of systemd services
+  ansible.builtin.file:
+    path: "/etc/systemd/system/{{ item }}.service.d/ansible_proxy.conf"
+    state: absent
+  loop: "{{ proxy_systemd_services }}"
+  when: proxy_remove.systemd_services
+  notify: Restart service
