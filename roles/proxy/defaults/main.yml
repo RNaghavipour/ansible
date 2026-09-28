@@ -3,11 +3,17 @@
 proxy_scope:
   system_wide: true
   shell_session: true
+  systemd_services: true
 
 # remove proxy from which scope
 proxy_remove:
   system_wide: false
   shell_session: false
+  systemd_services: false
+
+# which systemd services should proxy be set
+proxy_systemd_services:
+  - docker
 
 # information of the proxy
 proxy_ip: "192.168.1.1"
