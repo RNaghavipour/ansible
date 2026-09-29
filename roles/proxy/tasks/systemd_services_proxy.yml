@@ -5,6 +5,7 @@
     state: directory
     mode: '0755'
   loop: "{{ proxy_systemd_services }}"
+  when: proxy_scope.systemd_services
 
 - name: Configure proxy for systemd services
   ansible.builtin.copy:
