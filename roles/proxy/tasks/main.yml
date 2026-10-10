@@ -46,3 +46,7 @@
   ansible.builtin.include_tasks:
     file: systemd_services_proxy.yml
 
+- name: Configure proxy for apt
+  ansible.builtin.include_tasks:
+    file: apt_proxy.yml
+  when: ansible_os_family == "Debian"
