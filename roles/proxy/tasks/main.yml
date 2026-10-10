@@ -46,6 +46,10 @@
   ansible.builtin.include_tasks:
     file: systemd_services_proxy.yml
 
+- name: Configure proxy for wget
+  ansible.builtin.include_tasks:
+    file: wget_proxy.yml
+
 - name: Configure proxy for apt
   ansible.builtin.include_tasks:
     file: apt_proxy.yml

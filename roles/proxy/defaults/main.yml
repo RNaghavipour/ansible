@@ -4,6 +4,7 @@ proxy_scope:
   system_wide: true
   shell_session: true
   systemd_services: true
+  wget: true
   apt: true
 
 # remove proxy from which scope
@@ -11,6 +12,7 @@ proxy_remove:
   system_wide: false
   shell_session: false
   systemd_services: false
+  wget: false
   apt: false
 
 # which systemd services should proxy be set
