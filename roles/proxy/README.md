@@ -1,38 +1,53 @@
-Role Name
-=========
+Proxy
+=====
 
-A brief description of the role goes here.
+A role to set proxy from system-wide to specific services.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Just details of the proxy.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+- proxy_ip: Proxy IP address. it's necessary to set proxy correctly.
+- proxy_port: Proxy port. it's necessary to set proxy correctly.
+- proxy_scope: In which scope should the proxy set. By set the value for system_wide, shell_session, systemd_services, wget, apt and yum to 'true', the role will configure the proxy for that.
+- proxy_remove: In which scope should the proxy removed. By set the value for system_wide, shell_session, systemd_services, wget, apt and yum to 'true', if the proxy was set for it, the role will remove that.
+- proxy_systemd_services: If in proxy_scope the systemd_services value be 'true', for systemd services that define here (as list), the role will set proxy.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+No other role.
 
 Example Playbook
 ----------------
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: servers
+    - name: Set proxy on the machines
+      hosts: all
+      become: true
       roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+      - role: proxy
+        vars:
+          proxy_ip: "192.168.1.20"
+          proxy_port: "1810"
+          proxy_scope:
+            system_wide: true
+            shell_session: true
+            systemd_services: true
+            wget: true
+            apt: true
+            yum: true
+          proxy_remove:
+            system_wide: false
+            shell_session: false
+            systemd_services: false
+            wget: false
+            apt: false
+            yum: false
+          proxy_systemd_services:
+            - containerd
