@@ -54,3 +54,8 @@
   ansible.builtin.include_tasks:
     file: apt_proxy.yml
   when: ansible_os_family == "Debian"
+
+- name: Configure proxy for yum
+  ansible.builtin.include_tasks:
+    file: yum_proxy.yml
+  when: ansible_os_family == "RedHat"

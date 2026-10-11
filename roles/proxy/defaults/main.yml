@@ -6,6 +6,7 @@ proxy_scope:
   systemd_services: true
   wget: true
   apt: true
+  yum: true
 
 # remove proxy from which scope
 proxy_remove:
@@ -14,6 +15,7 @@ proxy_remove:
   systemd_services: false
   wget: false
   apt: false
+  yum: false
 
 # which systemd services should proxy be set
 proxy_systemd_services:

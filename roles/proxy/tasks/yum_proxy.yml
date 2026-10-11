@@ -1,0 +1,14 @@
+---
+- name: Set proxy for dnf package manager
+  ansible.builtin.lineinfile:
+    path: /etc/dnf/dnf.conf
+    regexp: "^proxy="
+    line: "proxy=http://{{ proxy_ip }}:{{ proxy_port }}"
+  when: proxy_scope.yum
+
+- name: Remove proxy from dnf package manager
+  ansible.builtin.lineinfile:
+    path: /etc/dnf/dnf.conf
+    regexp: "^proxy="
+    state: absent
+  when: proxy_remove.yum
