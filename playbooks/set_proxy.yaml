@@ -1,0 +1,25 @@
+---
+- name: Set proxy on the machines
+  hosts: all
+  become: true
+  roles:
+  - role: proxy
+    vars:
+      proxy_ip: "192.168.1.20"
+      proxy_port: "1810"
+      proxy_scope:
+        system_wide: false
+        shell_session: false
+        systemd_services: false
+        wget: false
+        apt: false
+        yum: false
+      proxy_remove:
+        system_wide: false
+        shell_session: false
+        systemd_services: false
+        wget: false
+        apt: false
+        yum: false
+      proxy_systemd_services:
+        - containerd
