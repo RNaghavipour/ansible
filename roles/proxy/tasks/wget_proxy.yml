@@ -7,11 +7,11 @@
       http_proxy = http://{{ proxy_ip }}:{{ proxy_port }}
       https_proxy = http://{{ proxy_ip }}:{{ proxy_port }}
       ftp_proxy = http://{{ proxy_ip }}:{{ proxy_port }}
-  when: proxy_scope.wget
+  when: proxy_scope.wget | default(false)
 
 - name: Remove proxy of wget
   ansible.builtin.blockinfile:
     path: /etc/wgetrc
     marker: "# {mark} ANSIBLE WGET PROXY"
     state: absent
-  when: proxy_remove.wget
+  when: proxy_remove.wget | default(false)

@@ -10,14 +10,14 @@
       HTTPS_PROXY=http://{{ proxy_ip }}:{{ proxy_port }}
       all_proxy=socks5://{{ proxy_ip }}:{{ proxy_port }}
       ALL_PROXY=socks5://{{ proxy_ip }}:{{ proxy_port }}
-  when: proxy_scope.system_wide
+  when: proxy_scope.system_wide | default(false)
 
 - name: Remove proxy system-wide
   ansible.builtin.blockinfile:
     path: /etc/environment
     marker: "# {mark} ANSIBLE PROXY"
     state: absent
-  when: proxy_remove.system_wide
+  when: proxy_remove.system_wide | default(false)
 
 - name: Configure proxy for shell sessions
   ansible.builtin.include_tasks:

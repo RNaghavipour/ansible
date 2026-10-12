@@ -8,10 +8,10 @@
       Acquire::https::Proxy "https://{{ proxy_ip }}:{{ proxy_port }}";
       Acquire::http::Proxy::localhost "DIRECT";
       Acquire::https::Proxy::localhost "DIRECT";
-  when: proxy_scope.apt
+  when: proxy_scope.apt | default(false)
 
 - name: Remove proxy configs from apt
   ansible.builtin.file:
     path: /etc/apt/apt.conf.d/80proxy
     state: absent
-  when: proxy_remove.apt
+  when: proxy_remove.apt | default(false)

@@ -4,11 +4,11 @@
     path: /etc/dnf/dnf.conf
     regexp: "^proxy="
     line: "proxy=http://{{ proxy_ip }}:{{ proxy_port }}"
-  when: proxy_scope.yum
+  when: proxy_scope.yum | default(false)
 
 - name: Remove proxy from dnf package manager
   ansible.builtin.lineinfile:
     path: /etc/dnf/dnf.conf
     regexp: "^proxy="
     state: absent
-  when: proxy_remove.yum
+  when: proxy_remove.yum | default(false)

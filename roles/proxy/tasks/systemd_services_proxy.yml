@@ -5,7 +5,7 @@
     state: directory
     mode: '0755'
   loop: "{{ proxy_systemd_services }}"
-  when: proxy_scope.systemd_services
+  when: proxy_scope.systemd_services | default(false)
 
 - name: Configure proxy for systemd services
   ansible.builtin.copy:
@@ -22,7 +22,7 @@
         Environment "no_proxy=localhost,{{ proxy_ip }}"
         Environment "NO_PROXY=localhost,{{ proxy_ip }}"
   loop: "{{ proxy_systemd_services }}"
-  when: proxy_scope.systemd_services
+  when: proxy_scope.systemd_services | default(false)
   notify: Restart service
 
 - name: Remove proxy config of systemd services
@@ -30,5 +30,5 @@
     path: "/etc/systemd/system/{{ item }}.service.d/ansible_proxy.conf"
     state: absent
   loop: "{{ proxy_systemd_services }}"
-  when: proxy_remove.systemd_services
+  when: proxy_remove.systemd_services | default(false)
   notify: Restart service

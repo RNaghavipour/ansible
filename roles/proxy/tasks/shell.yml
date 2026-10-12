@@ -14,10 +14,10 @@
         export ALL_PROXY="socks5://{{ proxy_ip }}:{{ proxy_port }}"
         export no_proxy="localhost,{{ proxy_ip }}"
         export NO_PROXY="localhost,{{ proxy_ip }}"
-  when: proxy_scope.shell_session
+  when: proxy_scope.shell_session | default(false)
 
 - name: Remove proxy of shell sessions
   ansible.builtin.file:
     path: /etc/profile.d/ansible_proxy.sh
     state: absent
-  when: proxy_remove.shell_session
+  when: proxy_remove.shell_session | default(false)
