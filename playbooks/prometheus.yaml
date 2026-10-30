@@ -1,0 +1,13 @@
+---
+- name: Deploy prometheus
+  hosts: master
+  gather_facts: false
+  become: true
+  roles:
+    - name: prometheus
+      vars:
+        prometheus_path: "/opt/monitoring/prometheus"
+        prometheus_image: "prom/prometheus:v3.7.2"
+        prometheus_container_name: "prometheus"
+        prometheus_local_data: true
+        prometheus_port: 9090
