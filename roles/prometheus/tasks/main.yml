@@ -1,3 +1,59 @@
-#SPDX-License-Identifier: MIT-0
 ---
-# tasks file for prometheus
+- name: Ensure deploy directory exists
+  ansible.builtin.file:
+    path: "{{ prometheus_path }}"
+    owner: "65534"
+    group: "65534"
+    mode: "0755"
+    state: directory
+
+# With one task create both config and alerts directories
+- name: Ensure alerts directory exists
+  ansible.builtin.file:
+    path: "{{ prometheus_path }}/config/alerts"
+    owner: "65534"
+    group: "65534"
+    mode: "0755"
+    state: directory
+
+- name: Ensure data directory exists
+  ansible.builtin.file:
+    path: "{{ prometheus_path }}/prometheus_data"
+    owner: "65534"
+    group: "65534"
+    mode: "0755"
+    state: directory
+  when: prometheus_local_data
+
+- name: Copy compose template to destination
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ prometheus_path }}/docker-compose.yml"
+    owner: "65534"
+    group: "65534"
+    mode: "0755"
+
+- name: Copy Prometheus config file to prometheus directory
+  ansible.builtin.copy:
+    src: prometheus.yml
+    dest: "{{ prometheus_path }}/config"
+    owner: "65534"
+    group: "65534"
+    mode: "0755"
+  notify: Reload prometheus config file
+
+- name: Copy alert files to prometheus directory
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ prometheus_path }}/config/alerts"
+    owner: "65534"
+    group: "65534"
+    mode: "0755"
+  with_fileglob:
+    - "alert*"
+  notify: Reload prometheus config file
+
+- name: Run Prometheus using docker-compose file
+  ansible.builtin.command:
+    cmd: docker compose up -d
+    chdir: "{{ prometheus_path }}"
