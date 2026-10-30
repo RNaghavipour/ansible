@@ -1,3 +1,14 @@
-#SPDX-License-Identifier: MIT-0
----
-# defaults file for prometheus
+# Path to deploy prometheus
+prometheus_path: "/opt/monitoring/prometheus"
+
+# Image name and tag of prometheus
+prometheus_image: "prom/prometheus:v3.7.2"
+
+# Name of the container
+prometheus_container_name: "prometheus"
+
+# Data save in local path instead of docker volume
+prometheus_local_data: false
+
+# Port number of the host that map to prometheus port
+prometheus_port: 9090
