@@ -1,0 +1,25 @@
+services:
+  prometheus:
+    image: {{ prometheus_image }}
+    container_name: {{ prometheus_container_name }}
+    user: "65534:65534"
+    restart: always
+    volumes:
+      - ./config:/etc/prometheus:ro
+{% if prometheus_local_data %}
+      - ./prometheus_data:/prometheus
+{% else %}
+      - prometheus_data:/prometheus
+{% endif %}
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=30d
+      - --storage.tsdb.retention.size=50GB
+      - --web.enable-lifecycle
+      - --web.console.libraries=/usr/share/prometheus/console_libraries
+      - --web.console.templates=/usr/share/prometheus/consoles
+    ports:
+      - "{{ prometheus_port }}:9090"
+    mem_limit: 2g
+    cpus: 3.0
