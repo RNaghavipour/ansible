@@ -1,38 +1,40 @@
-Role Name
-=========
+Prometheus
+==========
 
-A brief description of the role goes here.
+Using this role can deploy Prometheus with configs and alert rule files in a server.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Internet or private registry access is needed to pull the Prometheus image.
+
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+- prometheus_path: The path that want to deploy Prometheus.
+- prometheus_image: Image repository, name and tag to deploy Prometheus from it.
+- prometheus_container_name: Container name of the deployed Prometheus.
+- prometheus_local_data: If don't want to use Docker volume, set the value to true. This way data will save in a directory
+  in the prometheus_path path.
+- prometheus_port: Which host port should Prometheus be exposed.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+Nothing.
+
 
 Example Playbook
 ----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+- name: Deploy prometheus
+  hosts: master
+  gather_facts: false
+  become: true
+  roles:
+    - name: prometheus
+      vars:
+        prometheus_path: "/opt/monitoring/prometheus"
+        prometheus_image: "prom/prometheus:v3.7.2"
+        prometheus_container_name: "prometheus"
+        prometheus_port: 9090
