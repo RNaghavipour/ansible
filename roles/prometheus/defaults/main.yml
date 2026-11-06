@@ -12,3 +12,6 @@ prometheus_local_data: false
 
 # Port number of the host that map to prometheus port
 prometheus_port: 9090
+
+# Enable remote_write feature or not
+prometheus_remote_write: false
