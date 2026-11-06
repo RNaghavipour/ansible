@@ -11,3 +11,4 @@
         prometheus_container_name: "prometheus"
         prometheus_local_data: true
         prometheus_port: 9090
+        prometheus_remote_write: false
